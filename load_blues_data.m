@@ -79,21 +79,30 @@ idx = find(interference_accuracy);
 for ii = 1:8, interference_accuracy(idx-ii) = true; end
 interference_accuracy = interference_accuracy | strcmp(T.condition, 'no_interference');
 
+% ----START ERROR -------------------------------------------------
+%   The following two lines of code is an error in the original analysis.
+%   It should only be run if the goal is to reproduce the exact numbers
+%   reported in the paper, rather than to analyze the data as described in
+%   the paper. It appears that for English speakers only, rather than
+%   scoring the 8 trials preceding each interference trial with the same
+%   value as the intereference trial itself, we only scored the preceding 7
+%   trials this way. The 8th trial preceding each interference test trial
+%   was always scored as correct for English speakers. This has only a very
+%   small effect on the analzyed trials, because it only applied to 1/8 of
+%   the trials on inccorect interference trials, and most interference
+%   trials were answered correctly. It has no effect on the russian data
+%   nor on the no-interference data of the enlish speakers.
+%
+% idx = find(interference_trials & contains(T.language, 'english'));
+% interference_accuracy(idx-8) = true;
+%
+% --- END ERROR ---------------------------------------------------
+
 % Add the accuracy variables to the table
 T = addvars(T, discrimination_trials, interference_trials, discrimination_accuracy, interference_accuracy);
 
-% Check accuracy per subject
-data = grpstats(T(T.discrimination_trials,:), 'subject', 'mean', 'DataVars','discrimination_accuracy');
-figure, histogram(data.mean_discrimination_accuracy); 
-xlim([.5 1]); ylabel('counts'); xlabel('Discrimination accuaracy')
-
-data = grpstats(T(T.interference_trials,:), 'subject', 'mean', 'DataVars','interference_accuracy');
-figure, histogram(data.mean_interference_accuracy);
-xlim([.5 1]); ylabel('counts'); xlabel('Inteference accuaracy')
-
-
 %% Label discrimination distance ('near' or 'far')
-
+% From paper:
 % "The nonmatching/distracter color square was either very similar to the
 % other two (two steps apart in our continuum of 20, a near-color
 % comparison) or more different (four steps apart, a far-color
@@ -115,8 +124,8 @@ distance(near) = {'near'};
 T = addvars(T, distance);
 
 %% Label trials as "within" or "between" category
-
-% "Each subject’s data were analyzed relative to their own linguistic
+% From paper:
+% "Each subject's data were analyzed relative to their own linguistic
 % boundary. Trials were classified as within-category if the test stimuli
 % fell on the same side of that subject’s boundary".
 
@@ -172,21 +181,23 @@ T = addvars(T, include_by_performance);
 % of three English and five Russian speakers."
 
 stats = grpstats(T(T.include_by_stim,:), 'subject', 'mean', 'DataVars', 'include_by_performance');
-include = stats.mean_include_by_performance >= 0.745;
+include = round(stats.mean_include_by_performance) >= 0.75;
 
 include_by_subject = ...
    ismember(T.subject, stats.subject(include));
 
 % check - manuscript says we excluded 3 english-speaking and 5
 % russian-speaking subjects
-disp(stats.subject(~include))
+fprintf('Excluded subjects:\n')
+disp(stats.subject(~include)')
 
 T = addvars(T, include_by_subject);
 
-% Note that it appears that one subject had 74.54% trials 'ok' by stated
-% criteria and was retained when they should have been rejected due to the
-% 75% threshold. (This was due to a rounding error - i.e., percent retained
-% was as column 2 digit percents, eg 60%, 75%, 90% etc). 
+% Note that it appears that in the original paper, the subject inclusion
+% threshold was compared to the percent of trials retained rounded to the
+% nearest percent. If we did not round, one additional subject would get
+% excluded, as their fraction of included data was 74.54%. Here, the
+% subject is included as in the original analysis for consistency. 
 
 %% Generate a new summary table
 %
