@@ -19,7 +19,7 @@ load_blues_data.m
 
 Recreation of the data summary (table 1 from the paper) is scripted in
 ```
-checkTable1.m
+check_table1.m
 ```
 
 Scripts will be added to generate the figures and statisitcs in the paper as well.
