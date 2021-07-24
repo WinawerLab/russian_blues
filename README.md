@@ -8,7 +8,7 @@ See OSF site for experimental code: https://osf.io/r9qzd/
 The raw data from the experiment is in the comma-delimited text file:
 
 ```
-russian_blues_data.csv>
+russian_blues_data.csv
 ```
 
 Some basic processing of the data as described in the paper is implemented in the script
