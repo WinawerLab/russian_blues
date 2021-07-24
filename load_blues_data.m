@@ -10,10 +10,10 @@
 % The raw data is stored as "russian_blues_data.csv". The script does some
 % minimal organizing and processing as described in the manuscript (e.g.,
 % labeling trials as "correct" or "incorrect", rejecting outlier trials)
-% and saves out the processed data as 'russian_blues_data_processed.csv'.
+% and saves out the processed data as "russian_blues_data_processed.csv".
 % It also saves out the summary data used for statistics and visualization
-% as russian_blues_summary.csv. The summary data average trials within subjects
-% and conditions.
+% as "russian_blues_summary.csv". The summary data average trials within
+% subjects and conditions.
 
 %% Read in raw data
 
