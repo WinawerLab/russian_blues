@@ -17,9 +17,11 @@ Some basic processing of the data as described in the paper is implemented in th
 load_blues_data.m
 ```
 
-Recreation of the data summary (table 1 from the paper) is scripted in
+Recreation of the data summary (table 1 from the paper) and the figures is scripted in
 ```
 check_table1.m
+check_figure1.m
+check_figure2.m
 ```
 
-Scripts will be added to generate the figures and statisitcs in the paper as well.
+Scripts will be added to check the statisitcs in the paper as well.
