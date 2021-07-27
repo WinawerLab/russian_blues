@@ -181,7 +181,7 @@ T = addvars(T, include_by_performance);
 % of three English and five Russian speakers."
 
 stats = grpstats(T(T.include_by_stim,:), 'subject', 'mean', 'DataVars', 'include_by_performance');
-include = round(stats.mean_include_by_performance) >= 0.75;
+include = round(stats.mean_include_by_performance*100) >= 75;
 
 include_by_subject = ...
    ismember(T.subject, stats.subject(include));
