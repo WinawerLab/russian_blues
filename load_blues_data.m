@@ -183,8 +183,7 @@ T = addvars(T, include_by_performance);
 stats = grpstats(T(T.include_by_stim,:), 'subject', 'mean', 'DataVars', 'include_by_performance');
 include = round(stats.mean_include_by_performance*100) >= 75;
 
-include_by_subject = ...
-   ismember(T.subject, stats.subject(include));
+include_by_subject = ismember(T.subject, stats.subject(include));
 
 % check - manuscript says we excluded 3 english-speaking and 5
 % russian-speaking subjects
@@ -198,6 +197,11 @@ T = addvars(T, include_by_subject);
 % nearest percent. If we did not round, one additional subject would get
 % excluded, as their fraction of included data was 74.54%. Here, the
 % subject is included as in the original analysis for consistency. 
+
+% Check that, as reported, the trial exclusion criteria resulted in
+% excluding 12% of trials (retaining 88%):
+idx = T.discrimination_trials & T.include_by_subject;
+fprintf('Percent valid trials: %3.1f\n', 100*mean(T.include_by_performance(idx)))
 
 %% Generate a new summary table
 %
